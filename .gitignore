@@ -5,9 +5,6 @@
 /.pnp
 .pnp.js
 
-# IDE
-.vscode
-
 # testing
 /coverage
 
@@ -20,17 +17,19 @@
 
 # misc
 .DS_Store
-.env.local
+*.pem
 
 # debug
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
-# icons
-/src/components/icons/components
-/src/components/icons/Icons.stories.tsx
-/src/components/icons/index.ts
+# local env files
+.env*.local
 
-#storybook
-storybook-static
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
