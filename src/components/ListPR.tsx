@@ -4,52 +4,9 @@ export default function ListPR() {
   return (
     <div className=" flex h-screen">
       <div className=" w-screen flex justify-center">
-        <div className="relative overflow-x-auto shadow-md sm:rounded-lg w-full m-8">
+        <div className="relative shadow-md sm:rounded-lg w-full m-8">
           <div className="flex items-center justify-between pb-4 bg-white dark:bg-gray-900">
-            <div>
-              <div
-                id="dropdownAction"
-                className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700 dark:divide-gray-600"
-              >
-                <ul
-                  className="py-1 text-sm text-gray-700 dark:text-gray-200"
-                  aria-labelledby="dropdownActionButton"
-                >
-                  <li>
-                    <a
-                      href="#"
-                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    >
-                      Reward
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    >
-                      Promote
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="block px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white"
-                    >
-                      Activate account
-                    </a>
-                  </li>
-                </ul>
-                <div className="py-1">
-                  <a
-                    href="#"
-                    className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 dark:hover:bg-gray-600 dark:text-gray-200 dark:hover:text-white"
-                  >
-                    Delete User
-                  </a>
-                </div>
-              </div>
-            </div>
+            
             <label htmlFor="table-search" className="sr-only">
               Search
             </label>
@@ -79,7 +36,7 @@ export default function ListPR() {
               />
             </div>
           </div>
-          <table className=" table w-full text-sm text-left text-gray-500 dark:text-gray-400">
+          <table className=" table w-full text-sm text-left text-gray-500 dark:text-gray-400 overflow-scroll w-full">
             <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
               <tr>
                 <th scope="col" className="px-6 py-3">
@@ -127,6 +84,7 @@ export default function ListPR() {
                   </a>
                 </td>
               </tr>
+              
             </tbody>
           </table>
         </div>
