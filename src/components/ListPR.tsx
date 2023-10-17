@@ -3,7 +3,7 @@ import Link from "next/link";
 export default function ListPR() {
   return (
     <div className=" flex h-screen">
-      <div className=" m-auto w-screen flex justify-center">
+      <div className=" w-screen flex justify-center">
         <div className="relative overflow-x-auto shadow-md sm:rounded-lg w-full m-8">
           <div className="flex items-center justify-between pb-4 bg-white dark:bg-gray-900">
             <div>
