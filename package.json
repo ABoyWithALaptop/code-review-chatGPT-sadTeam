@@ -6,16 +6,19 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "generate:api": "orval --config ./src/orval.config.js"
   },
   "dependencies": {
     "axios": "^1.5.1",
     "next": "13.5.4",
     "octokit": "^3.1.1",
+    "parse-diff": "^0.11.1",
     "react": "^18",
     "react-checkbox-tree": "^1.8.0",
     "react-dom": "^18",
-    "react-icons": "^4.11.0"
+    "react-icons": "^4.11.0",
+    "swr": "^2.2.4"
   },
   "devDependencies": {
     "@dwarvesf/react-eslint-config": "^1.0.1",
@@ -38,6 +41,7 @@
     "eslint-plugin-react": "^7.33.2",
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-testing-library": "^5.11.1",
+    "orval": "^6.18.1",
     "postcss": "^8",
     "tailwindcss": "^3",
     "typescript": "^5"

@@ -1,6 +1,5 @@
 {
   "extends": [
-    "@dwarvesf/react-eslint-config",
     "next/core-web-vitals"
   ]
 }
