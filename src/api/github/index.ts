@@ -70,6 +70,11 @@ export async function getDiff(url_diff: string, token?: string) {
 		console.log("res", res);
 		const formatRes = parse(String(res.data));
 		console.log("formatRes", formatRes);
+		let formatRes2: parse.File[] = [];
+		formatRes.forEach((item) => {
+			if (item.from?.includes("lock.json")) return;
+			const file = {};
+		});
 	} catch (error) {
 		console.log("error", error);
 	}
@@ -101,3 +106,7 @@ export async function getDiff(url_diff: string, token?: string) {
 // 		}
 // 	);
 // }
+export function callGPT(files: []) {
+	var patchPartArray = [];
+	files.forEach((file) => {});
+}
