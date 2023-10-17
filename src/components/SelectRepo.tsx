@@ -1,21 +1,18 @@
+import { useState } from "react";
+
 export default function SelectRepo() {
+    const handleSubmit = () => {
+        // Handle here
+        console.log(link);
+        console.log(accesstoken);
+    }
+
+    const [link,setLink] = useState("");
+    const [accesstoken,setAccesstoken] = useState("");
+
   return (
     <div className=" flex h-screen">
       <div className=" m-auto w-screen flex justify-center">
-        {/* <form action="">
-                    <label htmlFor="link-repo">
-                        <span>Link to repository</span>
-                        <input type="text" id="link-repo"/>
-                    </label>
-                    <br />
-                    <label htmlFor="token">
-                        <span>access token</span>
-                        <input type="text" id="token"/>
-                    </label>    
-                    <button>
-
-                    </button>
-                </form> */}
         <form className=" w-full max-w-lg">
           <div className="md:flex md:items-center mb-6">
             <div className="md:w-1/3">
@@ -31,7 +28,8 @@ export default function SelectRepo() {
                 className="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500"
                 id="link-repo"
                 type="text"
-                value=""
+                value={link}
+                onChange={(e) => setLink(e.target.value)}
                 required
               />
             </div>
@@ -51,6 +49,8 @@ export default function SelectRepo() {
                 id="accesstoken"
                 type="password"
                 placeholder="******************"
+                value={accesstoken}
+                onChange={(e) => setAccesstoken(e.target.value)}
                 required
               />
             </div>
@@ -62,6 +62,7 @@ export default function SelectRepo() {
               <button
                 className="shadow bg-purple-500 hover:bg-purple-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
                 type="button"
+                onClick={handleSubmit}
               >
                 Continue
               </button>
