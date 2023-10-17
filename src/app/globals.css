@@ -24,7 +24,7 @@ body {
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb)); */
-    background-color: white;
+  background-color: white;
 }
 
 .btn-primary {
@@ -33,4 +33,35 @@ body {
 
 .btn-secondary {
   @apply inline-block rounded-md text-base font-bold text-black bg-white border border-gray-300 hover:bg-gray-300 transition px-3 py-2 ml-2;
+}
+
+table,
+thead,
+td,
+th {
+  @apply px-2 py-4 text-left;
+}
+
+thead {
+  @apply font-bold;
+}
+
+.table tr th:first-child {
+  /* width: 45%; */
+  @apply w-[40%];
+}
+
+.table tr th:nth-child(2) {
+  /* width: 30%; */
+  @apply w-[20%];
+}
+
+.table tr th:nth-child(3) {
+  /* width: 15%; */
+  @apply w-[20%];
+}
+
+.table tr th:last-child {
+  /* width: 10%; */
+  @apply w-[10%];
 }
