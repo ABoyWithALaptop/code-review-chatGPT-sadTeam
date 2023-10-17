@@ -18,10 +18,19 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
+  /* background: linear-gradient(
       to bottom,
       transparent,
       rgb(var(--background-end-rgb))
     )
-    rgb(var(--background-start-rgb));
+    rgb(var(--background-start-rgb)); */
+    background-color: white;
+}
+
+.btn-primary {
+  @apply relative inline-block rounded-lg border border-gray-300 text-center text-sm font-bold text-[#51565B] bg-gray-200 hover:bg-gray-300 transition px-3 py-2 m-2 w-full;
+}
+
+.btn-secondary {
+  @apply inline-block rounded-md text-base font-bold text-black bg-white border border-gray-300 hover:bg-gray-300 transition px-3 py-2 ml-2;
 }
