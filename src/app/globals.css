@@ -46,6 +46,10 @@ thead {
   @apply font-bold;
 }
 
+.table {
+  @apply w-full;
+}
+
 .table tr th:first-child {
   /* width: 45%; */
   @apply w-[40%];
@@ -58,10 +62,16 @@ thead {
 
 .table tr th:nth-child(3) {
   /* width: 15%; */
-  @apply w-[20%];
+  @apply w-[30%];
+}
+
+.table tr th:nth-child(4) {
+  /* width: 15%; */
+  @apply w-[5%];
 }
 
 .table tr th:last-child {
-  /* width: 10%; */
-  @apply w-[10%];
+  /* width: 15%; */
+  @apply w-[5%];
 }
+/**/
