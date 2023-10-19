@@ -1,15 +1,20 @@
+import { getPulls } from "@/api/github";
 import Link from "next/link";
 
-export default function ListPR() {
+const url = 'https://github.com/ABoyWithALaptop/code-review-chatGPT-sadTeam'
+const token = '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'
 
-  
-
+export default async function ListPR() {
+  const list_PR = await getPulls(url,token);
+  if (list_PR)
+    console.log('list_PR',list_PR);
+  else
+    console.log('error')
   return (
     <div className=" flex h-screen">
       <div className=" w-screen flex justify-center">
         <div className="relative shadow-md sm:rounded-lg w-full m-8">
           <div className="flex items-center justify-between pb-4 bg-white dark:bg-gray-900">
-            
             <label htmlFor="table-search" className="sr-only">
               Search
             </label>
@@ -60,37 +65,53 @@ export default function ListPR() {
                 </th>
               </tr>
             </thead>
-            <tbody break-words>
-              <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600">
-                <td
-                  
-                  className="px-6 py-4 text-gray-900 dark:text-white"
-                >
-                  <div className="text-base font-semibold">Neil Sims Neil dsadasddsadasdsadasddasdasdsadadasdsadasd dsadasdsada dsadasdsada dsadasdsada</div>
+            <tbody>
+              <tr className="table__row">
+                <td className=" pr__title">
+                  Neil Sims Neil dsadasddsadasdsadasddasdasdsadadasdsadasd
+                  dsadasdsada dsadasdsada dsadasdsada
                 </td>
-                <td className="px-6 py-4">React Developer</td>
-                <td className="px-6 py-4">
-                  <Link href="/">dsadasddsadasdsadasddasdasdsadadasdsadasd dsadasdsada dsadasdsada</Link>
+                <td>React Developer</td>
+                <td>
+                  <Link href="/">
+                    dsadasddsadasdsadasddasdasdsadadasdsadasd dsadasdsada
+                    dsadasdsada
+                  </Link>
                 </td>
-                <td className="px-6 py-4">
+                <td>
                   <div className="flex items-center">
                     <div className="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></div>
                     Open
                   </div>
                 </td>
-                <td className="px-6 py-4">
-                  <a
-                    href="#"
-                    className="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                  >
+                <td>
+                  <a href="#" className="pr__action">
                     Review
                   </a>
                 </td>
               </tr>
-              
+              {/* {list_PR.map((pr) => (
+                <tr className="table__row">
+                  <td className=" pr__title">{pr.title}</td>
+                  <td>{pr.user.login}</td>
+                  <td>
+                    <Link href={pr.html_url}>{pr.html_url}</Link>
+                  </td>
+                  <td>
+                    <div className="flex items-center">
+                      <div className="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></div>
+                      Open
+                    </div>
+                  </td>
+                  <td>
+                    <a href="#" className="pr__action">
+                      Review
+                    </a>
+                  </td>
+                </tr>
+              ))} */}
             </tbody>
           </table>
-          
         </div>
       </div>
     </div>

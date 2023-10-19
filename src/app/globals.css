@@ -75,3 +75,19 @@ thead {
   @apply w-[5%];
 }
 /**/
+
+.table__row {
+  @apply bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600;
+}
+
+.table tr td {
+  @apply px-6 py-4;
+}
+
+.pr__title {
+  @apply text-gray-900 dark:text-white text-base font-semibold;
+}
+
+.pr__action {
+  @apply font-medium text-blue-600 dark:text-blue-500 hover:underline
+}
