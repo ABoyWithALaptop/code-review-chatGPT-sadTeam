@@ -1,10 +1,14 @@
 import { useState } from "react";
+import { useRepo } from "@/context/RepoContext";
+import { useRouter } from 'next/navigation'
 
 export default function SelectRepo() {
+    const { loginContext } = useRepo();
+    const router = useRouter();
     const handleSubmit = () => {
         // Handle here
-        console.log(link);
-        console.log(accesstoken);
+        loginContext(link,accesstoken);
+        router.push('/select-pr')
     }
 
     const [link,setLink] = useState("");

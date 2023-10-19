@@ -2,19 +2,11 @@ import { getPulls,pull } from "@/api/github";
 import { get } from "http";
 import Link from "next/link";
 import { useEffect, useState } from "react";
-
-
-const url = 'https://github.com/ABoyWithALaptop/code-review-chatGPT-sadTeam'
-const token = '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'
+import { useRepo } from "@/context/RepoContext";
 
 export default function ListPR() {
-  const [list_PR,setList_PR] = useState<pull[]>();
-
-  useEffect(() => {
-    getPulls(url,token).then((res) => setList_PR(res));
-  },[])
-
-  console.log(list_PR);
+  const { list_PR, getListPRContext, handleSelectPRContext } = useRepo();
+  getListPRContext();
 
   return (
     <div className=" flex h-screen">
@@ -110,7 +102,7 @@ export default function ListPR() {
                     </div>
                   </td>
                   <td>
-                    <a href="#" className="pr__action">
+                    <a className="pr__action" onClick={()=>handleSelectPRContext(pr)}>
                       Review
                     </a>
                   </td>
