@@ -1,15 +1,21 @@
-import { getPulls } from "@/api/github";
+import { getPulls,pull } from "@/api/github";
+import { get } from "http";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+
 
 const url = 'https://github.com/ABoyWithALaptop/code-review-chatGPT-sadTeam'
 const token = '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'
 
-export default async function ListPR() {
-  const list_PR = await getPulls(url,token);
-  if (list_PR)
-    console.log('list_PR',list_PR);
-  else
-    console.log('error')
+export default function ListPR() {
+  const [list_PR,setList_PR] = useState<pull[]>();
+
+  useEffect(() => {
+    getPulls(url,token).then((res) => setList_PR(res));
+  },[])
+
+  console.log(list_PR);
+
   return (
     <div className=" flex h-screen">
       <div className=" w-screen flex justify-center">
@@ -66,7 +72,7 @@ export default async function ListPR() {
               </tr>
             </thead>
             <tbody>
-              <tr className="table__row">
+              {/* <tr className="table__row">
                 <td className=" pr__title">
                   Neil Sims Neil dsadasddsadasdsadasddasdasdsadadasdsadasd
                   dsadasdsada dsadasdsada dsadasdsada
@@ -89,11 +95,11 @@ export default async function ListPR() {
                     Review
                   </a>
                 </td>
-              </tr>
-              {/* {list_PR.map((pr) => (
+              </tr> */}
+              {list_PR && list_PR.map((pr) => (
                 <tr className="table__row">
                   <td className=" pr__title">{pr.title}</td>
-                  <td>{pr.user.login}</td>
+                  <td>{pr.upploader}</td>
                   <td>
                     <Link href={pr.html_url}>{pr.html_url}</Link>
                   </td>
@@ -109,7 +115,7 @@ export default async function ListPR() {
                     </a>
                   </td>
                 </tr>
-              ))} */}
+              ))}
             </tbody>
           </table>
         </div>

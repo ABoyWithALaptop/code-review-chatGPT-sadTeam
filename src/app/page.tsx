@@ -7,6 +7,6 @@ import ListPR from "@/components/ListPR";
 
 export default function Home() {
 	return (
-		<ListPR />
+		<SelectRepo />
 	)
 }
