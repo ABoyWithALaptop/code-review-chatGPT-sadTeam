@@ -1,3 +1,5 @@
+'use client'
+
 import ListPR from "@/components/ListPR"
 
 export default function SelectPR (){
