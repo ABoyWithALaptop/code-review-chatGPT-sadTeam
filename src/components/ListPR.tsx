@@ -1,4 +1,4 @@
-import { getPulls,pull } from "@/api/github";
+import { getPulls, pull } from "@/api/github";
 import { get } from "http";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -88,26 +88,30 @@ export default function ListPR() {
                   </a>
                 </td>
               </tr> */}
-              {list_PR && list_PR.map((pr) => (
-                <tr className="table__row">
-                  <td className=" pr__title">{pr.title}</td>
-                  <td>{pr.upploader}</td>
-                  <td>
-                    <Link href={pr.html_url}>{pr.html_url}</Link>
-                  </td>
-                  <td>
-                    <div className="flex items-center">
-                      <div className="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></div>
-                      Open
-                    </div>
-                  </td>
-                  <td>
-                    <a className="pr__action" onClick={()=>handleSelectPRContext(pr)}>
-                      Review
-                    </a>
-                  </td>
-                </tr>
-              ))}
+              {list_PR &&
+                list_PR.map((pr, index) => (
+                  <tr className="table__row" key={index}>
+                    <td className=" pr__title">{pr.title}</td>
+                    <td>{pr.upploader}</td>
+                    <td>
+                      <Link href={pr.html_url}>{pr.html_url}</Link>
+                    </td>
+                    <td>
+                      <div className="flex items-center">
+                        <div className="h-2.5 w-2.5 rounded-full bg-green-500 mr-2"></div>
+                        Open
+                      </div>
+                    </td>
+                    <td>
+                      <a
+                        className="pr__action cursor-pointer"
+                        onClick={() => handleSelectPRContext(pr)}
+                      >
+                        Review
+                      </a>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>
