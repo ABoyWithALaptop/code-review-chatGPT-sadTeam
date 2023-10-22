@@ -5,7 +5,6 @@ module.exports = {
       target: './api',
       schemas: './api/model',
       client: 'swr',
-      mock: true,
     },
     input: {
       target: 'https://openrouter-api.dwarvesf.com/api/v1/openapi.json',
