@@ -1,6 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import { useRepo } from "@/context/RepoContext";
+import { getDiff } from "@/services/github";
+import React, { useEffect, useState } from "react";
 import CheckboxTree from "react-checkbox-tree";
 import "react-checkbox-tree/lib/react-checkbox-tree.css";
 import {
@@ -15,51 +17,50 @@ import {
   MdInsertDriveFile,
 } from "react-icons/md";
 
-const nodes = [
-  {
-    value: "src",
-    label: "src",
-    children: [
-      {
-        value: "app",
-        label: "app",
-        children: [
-          {
-            value: "login",
-            label: "login",
-            children: [{ value: "login.tsx", label: "login.tsx" }],
-          },
-          {
-            value: "page.tsx",
-            label: "page.tsx",
-          },
-        ],
-      },
-      {
-        value: "components",
-        label: "components",
-        children: [
-          {
-            value: "CheckboxTree.tsx",
-            label: "CheckboxTree.tsx",
-          },
-          {
-            value: "index.tsx",
-            label: "index.tsx",
-          },
-        ],
-      },
-      {
-        value: "README.md",
-        label: "README.md",
-      },
-    ],
-  },
-];
+interface TreeNode {
+  value: string;
+  label: string;
+  children?: TreeNode[];
+}
 
 function CustomCheckBoxTree(): JSX.Element {
   const [checked, setChecked] = useState<string[]>([]);
   const [expanded, setExpanded] = useState<string[]>([]);
+  const { token, selectedPR } = useRepo();
+  const [treeNodes, setTreeNodes] = useState<TreeNode[]>([]);
+
+  useEffect(() => {
+    if (selectedPR && selectedPR.diff_url && token) {
+      getDiff(selectedPR.diff_url, token).then((res) => {
+        const rootNode: TreeNode = {
+          value: "root",
+          label: "Project Root",
+          children: [],
+        };
+
+        res?.forEach((item) => {
+          if (item.newFile) {
+            const filePath = item.newFile.split("/");
+            let currentNode = rootNode;
+
+            for (const part of filePath) {
+              let childNode = currentNode.children?.find(
+                (c) => c.value === part
+              );
+              if (!childNode) {
+                childNode = { value: part, label: part, children: [] };
+                currentNode.children = currentNode.children || [];
+                currentNode.children.push(childNode);
+              }
+              currentNode = childNode;
+            }
+          }
+        });
+
+        setTreeNodes([rootNode]);
+      });
+    }
+  }, [selectedPR, token]);
 
   const icons = {
     check: <MdCheckBox className="rct-icon rct-icon-check" />,
@@ -82,7 +83,7 @@ function CustomCheckBoxTree(): JSX.Element {
   return (
     //@ts-ignore
     <CheckboxTree
-      nodes={nodes}
+      nodes={treeNodes}
       checked={checked}
       expanded={expanded}
       onCheck={(checked) => setChecked(checked)}
