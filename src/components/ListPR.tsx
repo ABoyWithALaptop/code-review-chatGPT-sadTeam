@@ -1,12 +1,11 @@
-import { getPulls, pull } from "@/api/github";
-import { get } from "http";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRepo } from "@/context/RepoContext";
 
 export default function ListPR() {
-  const { list_PR, getListPRContext, handleSelectPRContext } = useRepo();
-  getListPRContext();
+  const {repo_token,repo_url, list_PR, getListPRContext, handleSelectPRContext } = useRepo();
+  console.log(repo_token,repo_url)
+  getListPRContext(repo_url,repo_token);
 
   return (
     <div className=" flex h-screen">

@@ -1,14 +1,17 @@
 "use client";
 
+import { useSessionStorage } from "usehooks-ts";
 import { createContext, useContext, useMemo, useState, useEffect } from "react";
-import { getDiff, getPulls, pull } from "@/api/github";
+import { getDiff, getPulls, pull } from "@/services/github";
 import { useRouter } from "next/navigation";
 
 interface RepoContextType {
   selectedPR: pull;
+  repo_url: string;
+  repo_token: string;
   list_PR: pull[] | undefined;
   handleSelectPRContext: (pr: pull) => void;
-  getListPRContext: () => void;
+  getListPRContext: (repo_url: string, repo_token: string) => void;
   loginContext: (url: string, token: string) => void;
 }
 
@@ -26,14 +29,15 @@ export const useRepo = () => {
 
 export default function RepoProvider(props: any) {
   const [list_PR, setList_PR] = useState<pull[]>();
-  const [repo_url, setRepo_url] = useState<string>("");
-  const [repo_token, setRepo_token] = useState<string>("");
+  const [repo_url, setRepo_url] = useSessionStorage<string>("url", "");
+  const [repo_token, setRepo_token] = useSessionStorage<string>("token", "");
   const [selectedPR, setSelectedPull] = useState<pull>();
   const router = useRouter();
 
-  const getListPR = () => {
+  const getListPR = (repo_url: string, repo_token: string) => {
     useEffect(() => {
-      getPulls(repo_url, repo_token).then((res) => setList_PR(res));
+      if (!list_PR)
+        getPulls(repo_url, repo_token).then((res) => setList_PR(res));
     }, [repo_url, repo_token]);
   };
 
@@ -57,6 +61,8 @@ export default function RepoProvider(props: any) {
     () => ({
       list_PR,
       selectedPR,
+      repo_url,
+      repo_token,
       getListPRContext: getListPR,
       loginContext: login,
       handleSelectPRContext: handleSelectPR,
