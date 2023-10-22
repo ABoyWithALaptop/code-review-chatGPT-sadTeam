@@ -21,7 +21,7 @@ export const useRepo = () => {
   const currentContext = useContext(RepoContext);
 
   if (!currentContext) {
-    throw new Error("Not found BookContext");
+    throw new Error("Not found RepoContext");
   }
 
   return currentContext;
