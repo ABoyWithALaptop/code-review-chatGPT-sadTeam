@@ -82,8 +82,10 @@ export async function getDiff(diff_url: string, token?: string) {
 		);
 
 		const rawString = String(res.data)
-			.split("diff")
+			.split("diff ")
 			.filter((item) => item !== "");
+		console.log("res.data", res.data);
+		console.log("rawString", rawString);
 		const formatRes = parse(String(res.data));
 		console.log("res diff", formatRes);
 		let formatRes2: fileInfoWithDiff[] = [];
