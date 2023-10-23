@@ -3,13 +3,13 @@ import { useRepo } from "@/context/RepoContext";
 import { useRouter } from "next/navigation";
 
 export default function SelectRepo() {
-	const { setRepo_url, setToken } = useRepo();
+	const { loginContext } = useRepo();
 	const router = useRouter();
 	const handleSubmit = () => {
 		// Handle here
-		// loginContext(link,accesstoken);
-		setRepo_url(link);
-		setToken(accesstoken);
+		loginContext(link,accesstoken);
+		// setRepo_url(link);
+		// setToken(accesstoken);
 		router.push("/select-pr");
 	};
 
