@@ -47,7 +47,6 @@ export async function review(pull: pull, files: fileInfoWithDiff[]) {
     - Do not highlight minor issues and nitpicks.
     - Use bullet points if you have multiple comments.
     - Provide security recommendations if there are any.
-    - Provide line of new code or old code when you point out suggestion or mistake.
 		- Provide the file you reviewed at the start of your comment.
 
     ${
