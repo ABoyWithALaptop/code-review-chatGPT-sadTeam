@@ -3,91 +3,94 @@
 @tailwind utilities;
 
 :root {
-  --foreground-rgb: 0, 0, 0;
-  --background-start-rgb: 214, 219, 220;
-  --background-end-rgb: 255, 255, 255;
+	--foreground-rgb: 0, 0, 0;
+	--background-start-rgb: 214, 219, 220;
+	--background-end-rgb: 255, 255, 255;
 }
-
+html {
+	@apply h-full;
+}
 @media (prefers-color-scheme: dark) {
-  :root {
-    --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
-  }
+	:root {
+		--foreground-rgb: 255, 255, 255;
+		--background-start-rgb: 0, 0, 0;
+		--background-end-rgb: 0, 0, 0;
+	}
 }
 
 body {
-  color: rgb(var(--foreground-rgb));
-  /* background: linear-gradient(
-      to bottom,
-      transparent,
-      rgb(var(--background-end-rgb))
-    )
-    rgb(var(--background-start-rgb)); */
-  background-color: white;
+	/* color: rgb(var(--foreground-rgb));
+	background: linear-gradient(
+			to bottom,
+			transparent,
+			rgb(var(--background-end-rgb))
+		)
+		rgb(var(--background-start-rgb));
+	background-color: white; */
+	@apply h-full;
 }
 
 .btn-primary {
-  @apply relative inline-block rounded-lg border border-gray-300 text-center text-sm font-bold text-[#51565B] bg-gray-200 hover:bg-gray-300 transition px-3 py-2 m-2 w-full;
+	@apply relative inline-block rounded-lg border border-gray-300 text-center text-sm font-bold text-[#51565B] bg-gray-200 hover:bg-gray-300 transition px-3 py-2 m-2 w-full;
 }
 
 .btn-secondary {
-  @apply inline-block rounded-md text-base font-bold text-black bg-white border border-gray-300 hover:bg-gray-300 transition px-3 py-2 ml-2;
+	@apply inline-block rounded-md text-base font-bold text-black bg-white border border-gray-300 hover:bg-gray-300 transition px-3 py-2 ml-2;
 }
 
 table,
 thead,
 td,
 th {
-  @apply px-2 py-4 text-left;
+	@apply px-2 py-4 text-left;
 }
 
 thead {
-  @apply font-bold;
+	@apply font-bold;
 }
 
 .table {
-  @apply w-full;
+	@apply w-full;
 }
 
 .table tr th:first-child {
-  /* width: 45%; */
-  @apply w-[40%];
+	/* width: 45%; */
+	@apply w-[40%];
 }
 
 .table tr th:nth-child(2) {
-  /* width: 30%; */
-  @apply w-[20%];
+	/* width: 30%; */
+	@apply w-[20%];
 }
 
 .table tr th:nth-child(3) {
-  /* width: 15%; */
-  @apply w-[30%];
+	/* width: 15%; */
+	@apply w-[30%];
 }
 
 .table tr th:nth-child(4) {
-  /* width: 15%; */
-  @apply w-[5%];
+	/* width: 15%; */
+	@apply w-[5%];
 }
 
 .table tr th:last-child {
-  /* width: 15%; */
-  @apply w-[5%];
+	/* width: 15%; */
+	@apply w-[5%];
 }
 /**/
 
 .table__row {
-  @apply bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600;
+	@apply bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-gray-600;
 }
 
 .table tr td {
-  @apply px-6 py-4;
+	@apply px-6 py-4;
 }
 
 .pr__title {
-  @apply text-gray-900 dark:text-white text-base font-semibold;
+	@apply text-gray-900 dark:text-white text-base font-semibold;
 }
 
 .pr__action {
-  @apply font-medium text-blue-600 dark:text-blue-500 hover:underline
+	@apply font-medium text-blue-600 dark:text-blue-500 hover:underline;
 }
