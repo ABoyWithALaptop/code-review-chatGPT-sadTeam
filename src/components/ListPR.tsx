@@ -1,21 +1,16 @@
-import { getPulls, pull } from "@/services/github";
-import { get } from "http";
+
+
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { useRepo } from "@/context/RepoContext";
 import { useRouter } from "next/navigation";
 
 export default function ListPR() {
-	// const { list_PR, getListPRContext, handleSelectPRContext } = useRepo();
-	const { list_PR, setListPR, token, setSelectedPR, repo_url } = useRepo();
-	// const [repoURL, setRepoURL] = useState<string>("");
-	const router = useRouter();
-	useEffect(() => {
-		getPulls(repo_url, token).then((res) => {
-			res ? setListPR(res) : setListPR([]);
-		});
-	}, [repo_url, token, setListPR]);
-	// getListPRContext();
+
+  const router = useRouter();
+  const {repo_token,repo_url, list_PR, getListPRContext, setSelectedPR } = useRepo();
+  console.log(repo_token,repo_url)
+  getListPRContext(repo_url,repo_token);
+
 
 	return (
 		<div className=" flex h-screen">
