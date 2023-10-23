@@ -99,8 +99,6 @@ const Page = () => {
 
 	useEffect(() => {
 		if (fileOnWatch) {
-			console.log("fileOnWatch", fileOnWatch);
-			console.log("reply", reply);
 			if (
 				reply.length > 0 &&
 				reply.some(
@@ -108,7 +106,6 @@ const Page = () => {
 						item.file.toLowerCase() == fileOnWatch.newFile?.toLowerCase()
 				)
 			) {
-				console.log("set status after reply");
 				setReviewStatus(false);
 			} else {
 				setReviewStatus(filesReviewing.includes(fileOnWatch.newFile!));
