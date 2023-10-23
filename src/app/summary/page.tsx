@@ -18,7 +18,6 @@ const Summary = () => {
       <div className="m-5">
         {reply.map((review, index) => (
           <div key={index} className="text-white">
-            <h3>Review {index + 1}</h3>
             <p>{review.reply}</p>
           </div>
         ))}
