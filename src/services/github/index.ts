@@ -84,10 +84,7 @@ export async function getDiff(diff_url: string, token?: string) {
 		const rawString = String(res.data)
 			.split("diff ")
 			.filter((item) => item !== "");
-		console.log("res.data", res.data);
-		console.log("rawString", rawString);
 		const formatRes = parse(String(res.data));
-		console.log("res diff", formatRes);
 		let formatRes2: fileInfoWithDiff[] = [];
 		formatRes.forEach((item, index) => {
 			if (item.from?.includes("lock.json")) return;
@@ -103,7 +100,6 @@ export async function getDiff(diff_url: string, token?: string) {
 			};
 			formatRes2.push(file);
 		});
-		console.log("formatRes", formatRes2);
 		return formatRes2;
 	} catch (error) {
 		console.log("error", error);
