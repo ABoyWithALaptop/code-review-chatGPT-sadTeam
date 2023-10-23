@@ -2,8 +2,7 @@
 
 import { useSessionStorage } from "usehooks-ts";
 import { createContext, useContext, useMemo, useState, useEffect } from "react";
-import { getDiff, getPulls, pull } from "@/services/github";
-import { useRouter } from "next/navigation";
+import { getPulls, pull } from "@/services/github";
 
 interface RepoContextType {
   selectedPR: pull;
@@ -33,7 +32,6 @@ export default function RepoProvider(props: any) {
   const [repo_url, setRepo_url] = useSessionStorage<string>("url", "");
   const [repo_token, setRepo_token] = useSessionStorage<string>("token", "");
   const [selectedPR, setSelectedPull] = useState<pull>();
-  const router = useRouter();
 
   const GetListPR = (repo_url: string, repo_token: string) => {
     useEffect(() => {
@@ -45,17 +43,6 @@ export default function RepoProvider(props: any) {
     setRepo_url(url);
     setRepo_token(token);
   };
-
-  // const handleSelectPR = (pr: pull) => {
-  // 	setSelectedPull(pr);
-  // 	console.log(selectedPR);
-  // 	if (pr.diff_url && repo_token) {
-  // 		getDiff(pr.diff_url, repo_token).then((diffData) => {
-  // 			console.log(diffData);
-  // 		});
-  // 	}
-  // 	router.push("/diff");
-  // };
 
   const value = useMemo(
     () => ({
