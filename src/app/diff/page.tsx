@@ -8,6 +8,7 @@ import { getDiff } from "@/services/github";
 import { Node } from "react-checkbox-tree";
 import { useFileContext } from "@/context/SelectedFileContext";
 import { review } from "@/services/GPT";
+import { useRouter } from 'next/navigation'
 
 function searchTree(element: Node, matchingTitle: string): Node | boolean {
 	if (element.value === matchingTitle) return element;
@@ -27,6 +28,7 @@ const Page = () => {
 	const [filesTree, setFilesTree] = useState<Node[]>([]); //[{ value: "src", label: "src" }
 	const [reviewStatus, setReviewStatus] = useState<boolean>(false);
 	const [reviewText, setReviewText] = useState<string>("");
+	const router = useRouter()
 	const {
 		totalFileCollection,
 		setTotalFileCollection,
@@ -141,6 +143,11 @@ const Page = () => {
 		});
 	};
 
+	const handleSummary=()=>{
+		console.log("Router to summary")
+		router.push('/summary')
+	}
+
 	return (
 		<div className="bg-gray-500">
 			<h2 className="m-5 text-center text-xl font-semibold">
@@ -150,14 +157,14 @@ const Page = () => {
 				<CheckboxTree filesTree={filesTree || []} />
 				<div className="flex flex-col w-2/4">
 					<CompareDiff />
-					<div className="m-1 h-28 rounded-md border border-gray-500">
+					<div className="m-1 rounded-md border border-gray-500">
 						<p>{reviewText}</p>
 					</div>
 					<div className="flex flex-row justify-around">
 						<button className="btn-primary" onClick={handleReview}>
 							Review
 						</button>
-						<button className="btn-primary">Sumary</button>
+						<button className="btn-primary" onClick={handleSummary}>Summary</button>
 					</div>
 				</div>
 			</div>
