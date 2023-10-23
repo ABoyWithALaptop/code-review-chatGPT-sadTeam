@@ -8,6 +8,7 @@ import { getDiff } from "@/services/github";
 import { Node } from "react-checkbox-tree";
 import { useFileContext } from "@/context/SelectedFileContext";
 import { review } from "@/services/GPT";
+import { useRouter } from 'next/navigation';
 import { toast } from "react-toastify";
 
 function searchTree(element: Node, matchingTitle: string): Node | boolean {
@@ -28,6 +29,7 @@ const Page = () => {
 	const [filesTree, setFilesTree] = useState<Node[]>([]); //[{ value: "src", label: "src" }
 	const [reviewStatus, setReviewStatus] = useState<boolean>(false);
 	const [reviewText, setReviewText] = useState<string>("");
+	const router = useRouter()
 	const {
 		totalFileCollection,
 		setTotalFileCollection,
@@ -178,6 +180,11 @@ const Page = () => {
 		});
 	};
 
+	const handleSummary=()=>{
+		console.log("Router to summary")
+		router.push('/summary')
+	}
+
 	return (
 		<div className="bg-white h-full px-4">
 			<h2 className="p-5 text-center text-xl font-semibold">
@@ -207,7 +214,7 @@ const Page = () => {
 						>
 							Review
 						</button>
-						<button className="btn-primary">Sumary</button>
+						<button className="btn-primary" onClick={handleSummary}>Summary</button>
 					</div>
 				</div>
 			</div>
