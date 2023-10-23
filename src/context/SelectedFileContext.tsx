@@ -2,10 +2,17 @@
 
 import { createContext, useContext, useMemo, useState, useEffect } from "react";
 import { fileInfoWithDiff, pull } from "@/services/github";
+import { reviewReply } from "@/services/GPT";
 
 export type fileSelectedContextType = {
 	fileSelected: fileInfoWithDiff[];
 	totalFileCollection: fileInfoWithDiff[];
+	fileOnWatch: fileInfoWithDiff;
+	reply: reviewReply[];
+	filesReviewing: string[];
+	setFilesReviewing: React.Dispatch<React.SetStateAction<string[]>>;
+	setReply: React.Dispatch<React.SetStateAction<reviewReply[]>>;
+	setFileOnWatch: React.Dispatch<React.SetStateAction<fileInfoWithDiff>>;
 	setTotalFileCollection: React.Dispatch<
 		React.SetStateAction<fileInfoWithDiff[]>
 	>;
@@ -29,29 +36,9 @@ export default function FileContextProvider(props: any) {
 	const [totalFileCollection, setTotalFileCollection] = useState<
 		fileInfoWithDiff[]
 	>([]);
-	// const router = useRouter();
-
-	// const getListPR = () => {
-	// 	useEffect(() => {
-	// 		getPulls(repo_url, repo_token).then((res) => setList_PR(res));
-	// 	}, [repo_url, repo_token]);
-	// };
-
-	// const login = (url: string, token: string) => {
-	// 	setRepo_url(url);
-	// 	setRepo_token(token);
-	// };
-
-	// const handleSelectPR = (pr: pull) => {
-	// 	setSelectedPull(pr);
-	// 	console.log(selectedPR);
-	// 	if (pr.diff_url && repo_token) {
-	// 		getDiff(pr.diff_url, repo_token).then((diffData) => {
-	// 			console.log(diffData);
-	// 		});
-	// 	}
-	// 	router.push("/diff");
-	// };
+	const [fileOnWatch, setFileOnWatch] = useState<fileInfoWithDiff>();
+	const [reply, setReply] = useState<reviewReply[]>([]);
+	const [filesReviewing, setFilesReviewing] = useState<string[]>([]);
 
 	const value = useMemo(
 		() => ({
@@ -59,11 +46,14 @@ export default function FileContextProvider(props: any) {
 			setFileSelected: setFileSelected,
 			totalFileCollection: totalFileCollection,
 			setTotalFileCollection: setTotalFileCollection,
-			// getListPRContext: getListPR,
-			// loginContext: login,
-			// handleSelectPRContext: handleSelectPR,
+			fileOnWatch: fileOnWatch,
+			setFileOnWatch: setFileOnWatch,
+			reply: reply,
+			setReply: setReply,
+			filesReviewing: filesReviewing,
+			setFilesReviewing: setFilesReviewing,
 		}),
-		[fileSelected, totalFileCollection]
+		[fileSelected, totalFileCollection, fileOnWatch, reply, filesReviewing]
 	);
 
 	return <FileSelectedContext.Provider value={value} {...props} />;

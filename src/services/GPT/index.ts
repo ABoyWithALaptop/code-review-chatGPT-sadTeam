@@ -31,11 +31,8 @@ export async function loginGPT() {
  * @summary review array of files and return array of review reply by GPT
  */
 
-export async function review(
-	token: string,
-	pull: pull,
-	files: fileInfoWithDiff[]
-) {
+export async function review(pull: pull, files: fileInfoWithDiff[]) {
+	let token = await loginGPT();
 	let prompt = `this is the change of pull request number ${
 		pull.number_pull
 	} requested by ${pull.upploader} with title is "${pull.title}" at ${
@@ -50,7 +47,8 @@ export async function review(
     - Do not highlight minor issues and nitpicks.
     - Use bullet points if you have multiple comments.
     - Provide security recommendations if there are any.
-    - Provide line of code when you point out suggestion or mistake.
+    - Provide line in a unified diff format code provided when you point out suggestion or mistake.
+		- Provide the file you reviewed at the start of your comment.
 
     ${
 			pull.description
@@ -62,32 +60,36 @@ export async function review(
   `;
 	const reviewReply: reviewReply[] = [];
 	for (const file of files) {
-		prompt += file.rawString;
-		console.log("file", prompt);
-		const res = (
-			await getChatCompletions(
-				{
-					model: "openai/gpt-3.5-turbo-16k",
-					messages: [
-						{
-							role: "system",
-							content: "you are an experianced software developer",
-						},
-						{ role: "user", content: prompt },
-					],
-				},
-				{
-					authorization: token,
-				},
-				{
-					baseURL: "https://openrouter-api.dwarvesf.com/api/v1/",
-				}
-			)
-		).data.choices[0].message.content;
+		let specificPrompt = prompt;
+		specificPrompt += file.rawString;
+		let res =
+			specificPrompt.length > 8000
+				? "this file is too big for review consider separated it into smaller file"
+				: (
+						await getChatCompletions(
+							{
+								model: "openai/gpt-3.5-turbo-16k",
+								messages: [
+									{
+										role: "system",
+										content: "you are an experianced software developer",
+									},
+									{ role: "user", content: specificPrompt },
+								],
+							},
+							{
+								authorization: token,
+							},
+							{
+								baseURL: "https://openrouter-api.dwarvesf.com/api/v1/",
+							}
+						)
+				  ).data.choices[0].message.content;
 		reviewReply.push({
 			file: file.newFile!,
 			reply: res,
 		});
 	}
+	console.log("reviewReply", reviewReply);
 	return reviewReply;
 }

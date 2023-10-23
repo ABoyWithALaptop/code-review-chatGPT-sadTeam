@@ -1,7 +1,8 @@
 "use client";
 
 import { useRepo } from "@/context/RepoContext";
-import { getDiff } from "@/services/github";
+import { useFileContext } from "@/context/SelectedFileContext";
+import { fileInfoWithDiff, getDiff } from "@/services/github";
 import React, { useEffect, useState } from "react";
 import CheckboxTree, { Node } from "react-checkbox-tree";
 import "react-checkbox-tree/lib/react-checkbox-tree.css";
@@ -28,7 +29,23 @@ function CustomCheckBoxTree({ filesTree }: { filesTree: Node[] }): JSX.Element {
 	const [checked, setChecked] = useState<string[]>([]);
 	const [expanded, setExpanded] = useState<string[]>([]);
 	const { repo_token, selectedPR } = useRepo();
+	const { totalFileCollection, setFileOnWatch, setFileSelected } =
+		useFileContext();
 	const [treeNodes, setTreeNodes] = useState<TreeNode[]>([]);
+	useEffect(() => {
+		console.log("checked", checked);
+		if (checked.length > 0) {
+			let checkedFile: fileInfoWithDiff[] = [];
+			totalFileCollection.forEach((file) => {
+				if (checked.includes(file.newFile!)) {
+					checkedFile.push(file);
+				}
+			});
+			if (checkedFile.length > 0) {
+				setFileSelected(checkedFile);
+			}
+		}
+	}, [checked]);
 
 	useEffect(() => {
 		if (selectedPR && selectedPR.diff_url && repo_token) {
@@ -89,6 +106,13 @@ function CustomCheckBoxTree({ filesTree }: { filesTree: Node[] }): JSX.Element {
 			expanded={expanded}
 			onCheck={(checked) => setChecked(checked)}
 			onExpand={(expanded) => setExpanded(expanded)}
+			onClick={(target) => {
+				console.log("clicked", target);
+				const watch = totalFileCollection.filter(
+					(file) => file.newFile === target.value
+				);
+				setFileOnWatch(watch[0]);
+			}}
 			icons={icons}
 		/>
 	);
