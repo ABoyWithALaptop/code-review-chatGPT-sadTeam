@@ -24,7 +24,13 @@ interface TreeNode {
 	children?: TreeNode[];
 }
 
-function CustomCheckBoxTree({ filesTree }: { filesTree: Node[] }): JSX.Element {
+function CustomCheckBoxTree({
+	filesTree,
+	disable,
+}: {
+	filesTree: Node[];
+	disable: boolean;
+}): JSX.Element {
 	console.log("filesTree", filesTree);
 	const [checked, setChecked] = useState<string[]>([]);
 	const [expanded, setExpanded] = useState<string[]>([]);
@@ -114,6 +120,7 @@ function CustomCheckBoxTree({ filesTree }: { filesTree: Node[] }): JSX.Element {
 				setFileOnWatch(watch[0]);
 			}}
 			icons={icons}
+			disabled={disable}
 		/>
 	);
 }

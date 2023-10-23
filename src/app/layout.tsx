@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import RepoProvider from "@/context/RepoContext";
 import FileContextProvider from "@/context/SelectedFileContext";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -21,6 +23,15 @@ export default function RootLayout({
 				<RepoProvider>
 					<FileContextProvider>{children}</FileContextProvider>
 				</RepoProvider>
+				<ToastContainer
+					position="top-right"
+					autoClose={8000}
+					hideProgressBar={false}
+					newestOnTop={false}
+					draggable={false}
+					closeOnClick
+					pauseOnHover
+				/>
 			</body>
 		</html>
 	);

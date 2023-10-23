@@ -8,6 +8,7 @@ import { getDiff } from "@/services/github";
 import { Node } from "react-checkbox-tree";
 import { useFileContext } from "@/context/SelectedFileContext";
 import { review } from "@/services/GPT";
+import { toast } from "react-toastify";
 
 function searchTree(element: Node, matchingTitle: string): Node | boolean {
 	if (element.value === matchingTitle) return element;
@@ -130,31 +131,72 @@ const Page = () => {
 	}, [reviewStatus, reply, fileOnWatch]);
 
 	const handleReview = () => {
+		if (fileSelected.length == 0 && !fileOnWatch) {
+			toast.error("Please select file to review");
+			return;
+		}
 		setReviewStatus(true);
 		const reviewFiles = fileSelected.length > 0 ? fileSelected : [fileOnWatch];
 		setFilesReviewing(reviewFiles.map((file) => file.newFile!) || []);
 		console.log("before review", reviewFiles);
+		// if (
+		// 	reply.some(
+		// 		(item) =>
+		// 			reviewFiles.filter((file) => file.newFile === item.file).length > 0
+		// 	)
+		// ) {
+
+		// }
 		review(selectedPR, reviewFiles).then((res) => {
 			console.log("review", res);
-			setReply(res!);
+			if (reply.length > 0) {
+				const copyReply = [...reply];
+				// check if any element in reply is in res
+				res!.forEach((item) => {
+					const index = copyReply.findIndex(
+						(reply) => reply.file === item.file
+					);
+					if (index > -1) {
+						copyReply[index] = item;
+					} else {
+						copyReply.push(item);
+					}
+				});
+				setReply(copyReply);
+			} else {
+				setReply(res!);
+			}
 			setReviewStatus(false);
 		});
 	};
 
 	return (
-		<div className="bg-gray-500">
-			<h2 className="m-5 text-center text-xl font-semibold">
-				Select files to review
+		<div className="bg-white h-full px-4">
+			<h2 className="p-5 text-center text-xl font-semibold">
+				{fileOnWatch
+					? `currently view: ${fileOnWatch.newFile}`
+					: "Select files to review (please open a file before choosing more files)"}
 			</h2>
-			<div className="flex flex-row justify-around">
-				<CheckboxTree filesTree={filesTree || []} />
-				<div className="flex flex-col w-2/4">
-					<CompareDiff />
-					<div className="m-1 h-28 rounded-md border border-gray-500">
-						<p>{reviewText}</p>
+			<div className="flex flex-row justify-around h-[calc(100%_-_4.25rem)]">
+				<div className="w-1/4">
+					<CheckboxTree
+						filesTree={filesTree || []}
+						disable={fileOnWatch ? false : true}
+					/>
+				</div>
+				<div className="flex flex-col w-3/4 h-full gap-1">
+					<div className="h-1/2 overflow-auto bg-gray-500 rounded-md border-2 border-gray-800">
+						<CompareDiff />
+					</div>
+					<div className="h-1/2 rounded-md border-2 border-gray-800 overflow-auto">
+						<p className=" whitespace-pre-line">{reviewText}</p>
 					</div>
 					<div className="flex flex-row justify-around">
-						<button className="btn-primary" onClick={handleReview}>
+						<button
+							className="btn-primary disabled:cursor-not-allowed disabled:opacity-50"
+							onClick={handleReview}
+							disabled={reviewStatus}
+						>
 							Review
 						</button>
 						<button className="btn-primary">Sumary</button>
