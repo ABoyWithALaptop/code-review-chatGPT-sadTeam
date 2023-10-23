@@ -142,7 +142,7 @@ const Page = () => {
 	};
 
 	return (
-		<div className="bg-gray-500">
+		<div className="bg-gray-500 h-full">
 			<h2 className="m-5 text-center text-xl font-semibold">
 				Select files to review
 			</h2>
