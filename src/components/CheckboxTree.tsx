@@ -3,7 +3,7 @@
 import { useRepo } from "@/context/RepoContext";
 import { getDiff } from "@/services/github";
 import React, { useEffect, useState } from "react";
-import CheckboxTree from "react-checkbox-tree";
+import CheckboxTree, { Node } from "react-checkbox-tree";
 import "react-checkbox-tree/lib/react-checkbox-tree.css";
 import {
 	MdCheckBox,
@@ -23,7 +23,8 @@ interface TreeNode {
 	children?: TreeNode[];
 }
 
-function CustomCheckBoxTree(): JSX.Element {
+function CustomCheckBoxTree({ filesTree }: { filesTree: Node[] }): JSX.Element {
+	console.log("filesTree", filesTree);
 	const [checked, setChecked] = useState<string[]>([]);
 	const [expanded, setExpanded] = useState<string[]>([]);
 	const { repo_token, selectedPR } = useRepo();
@@ -83,7 +84,7 @@ function CustomCheckBoxTree(): JSX.Element {
 	return (
 		//@ts-ignore
 		<CheckboxTree
-			nodes={treeNodes}
+			nodes={filesTree}
 			checked={checked}
 			expanded={expanded}
 			onCheck={(checked) => setChecked(checked)}

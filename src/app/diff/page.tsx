@@ -81,7 +81,7 @@ const Page = () => {
 						} else {
 							if (fileSplit[i].includes(".")) {
 								temp = {
-									value: fileSplit[i],
+									value: item.newFile,
 									label: fileSplit[i],
 								};
 							} else {
@@ -100,10 +100,10 @@ const Page = () => {
 			console.log("filesTree", filesTree);
 		});
 		setFilesTree(filesTree);
-		let lines = totalFileCollection![0].rawString.split("\n");
-		lines.splice(0, 2);
-		const newStr = lines.join("\n");
-		setDiffText(newStr);
+		// let lines = totalFileCollection![0].rawString.split("\n");
+		// lines.splice(0, 2);
+		// const newStr = lines.join("\n");
+		// setDiffText(newStr);
 	}, [totalFileCollection]);
 	return (
 		<div className="bg-gray-500">
@@ -111,7 +111,7 @@ const Page = () => {
 				Select files to review
 			</h2>
 			<div className="flex flex-row justify-around">
-				<CheckboxTree files={filesTree} />
+				<CheckboxTree filesTree={filesTree || []} />
 				<div className="flex flex-col w-2/4">
 					<CompareDiff diffText={diffText} />
 					<div className="m-1 h-28 rounded-md border border-gray-500">
