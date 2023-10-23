@@ -26,12 +26,12 @@ interface TreeNode {
 function CustomCheckBoxTree(): JSX.Element {
   const [checked, setChecked] = useState<string[]>([]);
   const [expanded, setExpanded] = useState<string[]>([]);
-  const { token, selectedPR } = useRepo();
+  const { selectedPR, repo_token } = useRepo();
   const [treeNodes, setTreeNodes] = useState<TreeNode[]>([]);
 
   useEffect(() => {
-    if (selectedPR && selectedPR.diff_url && token) {
-      getDiff(selectedPR.diff_url, token).then((res) => {
+    if (selectedPR && selectedPR.diff_url) {
+      getDiff(selectedPR.diff_url, repo_token).then((res) => {
         const rootNode: TreeNode = {
           value: "root",
           label: "Project Root",
@@ -60,7 +60,7 @@ function CustomCheckBoxTree(): JSX.Element {
         setTreeNodes([rootNode]);
       });
     }
-  }, [selectedPR, token]);
+  }, [selectedPR, repo_token]);
 
   const icons = {
     check: <MdCheckBox className="rct-icon rct-icon-check" />,
