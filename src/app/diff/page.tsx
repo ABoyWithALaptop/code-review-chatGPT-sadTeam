@@ -139,14 +139,22 @@ const Page = () => {
 		const reviewFiles = fileSelected.length > 0 ? fileSelected : [fileOnWatch];
 		setFilesReviewing(reviewFiles.map((file) => file.newFile!) || []);
 		console.log("before review", reviewFiles);
-		// if (
-		// 	reply.some(
-		// 		(item) =>
-		// 			reviewFiles.filter((file) => file.newFile === item.file).length > 0
-		// 	)
-		// ) {
-
-		// }
+		if (
+			reply.some(
+				(item) =>
+					reviewFiles.filter((file) => file.newFile === item.file).length > 0
+			)
+		) {
+			// remove file in reply that is in reviewFiles
+			const copyReply = [...reply];
+			reviewFiles.forEach((file) => {
+				const index = copyReply.findIndex((item) => item.file === file.newFile);
+				if (index > -1) {
+					copyReply.splice(index, 1);
+				}
+			});
+			setReply(copyReply);
+		}
 		review(selectedPR, reviewFiles).then((res) => {
 			console.log("review", res);
 			if (reply.length > 0) {
