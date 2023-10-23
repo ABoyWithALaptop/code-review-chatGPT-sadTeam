@@ -1,20 +1,13 @@
 import { useRepo } from "@/context/RepoContext";
+import { useFileContext } from "@/context/SelectedFileContext";
 import { getDiff } from "@/services/github";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { parseDiff, Diff, Hunk } from "react-diff-view";
 import "react-diff-view/style/index.css";
 
-const CompareDiff = () => {
-	const { token, selectedPR } = useRepo();
-	const [diffText, setDiffText] = useState<string>("");
-
-	getDiff(selectedPR.diff_url, token).then((res) => {
-		let lines = res![0].rawString.split("\n");
-		lines.splice(0, 2);
-		const newStr = lines.join("\n");
-		setDiffText(newStr);
-		console.log(newStr);
-	});
+const CompareDiff = ({ diffText }: { diffText: string }) => {
+	const { fileSelected } = useFileContext();
+	useEffect(() => {}, [fileSelected]);
 	const [diff] = parseDiff(diffText, { nearbySequences: "zip" });
 	console.log("diff arr", diff);
 	const EMPTY_HUNKS: any = [];
