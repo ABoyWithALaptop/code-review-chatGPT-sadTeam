@@ -52,7 +52,6 @@ export default function RepoProvider(props: any) {
       repo_token,
       getListPRContext: GetListPR,
       loginContext: login,
-      // handleSelectPRContext: handleSelectPR,
       setSelectedPR: setSelectedPull,
     }),
     [list_PR, GetListPR, login, selectedPR]
