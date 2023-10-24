@@ -1,12 +1,18 @@
-
 import { useRepo } from "@/context/RepoContext";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { getPulls, pull } from "@/services/github";
+import { useState } from "react";
 
 const LoginSchema = z.object({
-  repo_url: z.string().regex(/^(https?:\/\/)?(www\.)?github\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+$/,{ message: "Invalid url" }),
+  repo_url: z
+    .string()
+    .regex(
+      /^(https?:\/\/)?(www\.)?github\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+$/,
+      { message: "Invalid url" }
+    ),
   repo_token: z.string(),
 });
 
@@ -15,6 +21,19 @@ type LoginSchemaType = z.infer<typeof LoginSchema>;
 export default function SelectRepo() {
   const { loginContext } = useRepo();
   const router = useRouter();
+  const [list_PR, setList_PR] = useState<pull[]>();
+  const [isInvalidToken, setIsInvalidToken] = useState(false);
+  const GetListPR = (repo_url: string, repo_token: string) => {
+    getPulls(repo_url, repo_token).then((res) => {
+      if (!res){
+        setIsInvalidToken(true);
+        return;
+      }
+      setIsInvalidToken(false);
+      setList_PR(res);
+      router.push("/select-pr");
+    });
+  };
 
   const {
     formState: { errors },
@@ -32,12 +51,7 @@ export default function SelectRepo() {
     if (!errors.repo_url && !errors.repo_token && formValues.repo_token) {
       try {
         loginContext(formValues.repo_url, formValues.repo_token);
-        // getListPRContext(formValues.repo_url, formValues.repo_token);
-        // if (list_PR) {
-        //   router.push("/select-pr");
-        //   return;
-        // }
-        router.push("/select-pr");
+        GetListPR(formValues.repo_url, formValues.repo_token);
       } catch (error) {
         console.log(error);
       }
@@ -87,8 +101,10 @@ export default function SelectRepo() {
                 placeholder="******************"
                 {...register("repo_token")}
               />
-              {errors.repo_token && (
-                <span className=" text-red-500">{errors.repo_token.message}</span>
+              {isInvalidToken && (
+                <span className=" text-red-500">
+                  Invalid accesstoken
+                </span>
               )}
             </div>
           </div>
