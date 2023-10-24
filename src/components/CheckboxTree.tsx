@@ -104,7 +104,8 @@ function CustomCheckBoxTree({
 		leaf: <MdInsertDriveFile className="rct-icon rct-icon-leaf-close" />,
 	};
 	return (
-		//@ts-ignore
+		<div className="rounded border border-gray-600 mx-3 h-full overflow-auto">
+		{/* @ts-ignore */}
 		<CheckboxTree
 			nodes={filesTree}
 			checked={checked}
@@ -122,6 +123,7 @@ function CustomCheckBoxTree({
 			icons={icons}
 			disabled={disable}
 		/>
+		</div>
 	);
 }
 

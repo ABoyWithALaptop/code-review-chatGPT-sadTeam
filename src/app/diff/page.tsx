@@ -174,6 +174,10 @@ const Page = () => {
 	};
 
 	const handleSummary = () => {
+		if (fileSelected.length == 0 && !fileOnWatch) {
+			toast.error("Please select file to review");
+			return;
+		}
 		router.push("/summary");
 	};
 
