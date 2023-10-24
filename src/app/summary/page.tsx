@@ -22,8 +22,9 @@ const Summary = () => {
 			<div className="m-10 overflow-x-auto">
 				{reply.map((review, index) => (
 					<div key={index} className="text-white">
-						<h3 className="mt-5 text-lg font-semibold">Review {index + 1}:</h3>
+            <p className="mt-5 text-lg font-semibold">{review.file}</p>
 						<p className="whitespace-pre-line">{review.reply}</p>
+            <hr className="my-5 solid"/>
 					</div>
 				))}
 			</div>
