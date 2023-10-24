@@ -131,6 +131,13 @@ const Page = () => {
 			}
 		}
 	}, [reviewStatus, reply, fileOnWatch]);
+	useEffect(() => {
+		if (reply.length > 0) {
+			if (reply.some((item) => item.file === fileOnWatch.newFile)) {
+				setReviewStatus(false);
+			}
+		}
+	}, [reply]);
 
 	const handleReview = () => {
 		if (fileSelected.length == 0 && !fileOnWatch) {
@@ -138,13 +145,18 @@ const Page = () => {
 			return;
 		}
 		setReviewStatus(true);
-		const reviewFiles = fileSelected.length > 0 ? fileSelected : [fileOnWatch];
+		const currentlyReviewing = totalFileCollection.filter((file) =>
+			filesReviewing.includes(file.newFile!)
+		);
+		const reviewFiles =
+			fileSelected.length > 0
+				? fileSelected
+				: [...currentlyReviewing, fileOnWatch];
 		setFilesReviewing(reviewFiles.map((file) => file.newFile!) || []);
 		console.log("before review", reviewFiles);
 		if (
 			reply.some(
-				(item) =>
-					reviewFiles.filter((file) => file.newFile === item.file).length > 0
+				(item) => filesReviewing.filter((file) => file === item.file).length > 0
 			)
 		) {
 			// remove file in reply that is in reviewFiles
@@ -176,7 +188,12 @@ const Page = () => {
 			} else {
 				setReply(res!);
 			}
-			setReviewStatus(false);
+			setFilesReviewing(
+				filesReviewing.filter((file) => {
+					return !res!.some((item) => item.file === file);
+				})
+			);
+			// setReviewStatus(false);
 		});
 	};
 
@@ -213,7 +230,11 @@ const Page = () => {
 						>
 							Review
 						</button>
-						<button className="btn-primary" onClick={handleSummary}>
+						<button
+							className="btn-primary disabled:cursor-not-allowed disabled:opacity-50"
+							onClick={handleSummary}
+							disabled={reviewStatus}
+						>
 							Summary
 						</button>
 					</div>
