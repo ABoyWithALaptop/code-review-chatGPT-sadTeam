@@ -1,6 +1,6 @@
 import { useRepo } from "@/context/RepoContext";
 import { useRouter } from "next/navigation";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { getPulls, pull } from "@/services/github";
@@ -13,7 +13,7 @@ const LoginSchema = z.object({
       /^(https?:\/\/)?(www\.)?github\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+$/,
       { message: "Invalid url" }
     ),
-  repo_token: z.string(),
+  repo_token: z.string({required_error: "Token is required"}).nonempty({ message: "Token is required" }),
 });
 
 type LoginSchemaType = z.infer<typeof LoginSchema>;
@@ -21,16 +21,17 @@ type LoginSchemaType = z.infer<typeof LoginSchema>;
 export default function SelectRepo() {
   const { loginContext } = useRepo();
   const router = useRouter();
-  const [list_PR, setList_PR] = useState<pull[]>();
   const [isInvalidToken, setIsInvalidToken] = useState(false);
+  const [isClicked, setIsClicked] = useState(false);
+  
   const GetListPR = (repo_url: string, repo_token: string) => {
     getPulls(repo_url, repo_token).then((res) => {
-      if (!res){
+      setIsClicked(false);
+      if (!res) {
         setIsInvalidToken(true);
         return;
       }
       setIsInvalidToken(false);
-      setList_PR(res);
       router.push("/select-pr");
     });
   };
@@ -48,7 +49,9 @@ export default function SelectRepo() {
   });
 
   const onSubmit = handleSubmit(async (formValues) => {
+    console.log('error token',errors.repo_token)
     if (!errors.repo_url && !errors.repo_token && formValues.repo_token) {
+      setIsClicked(true);
       try {
         loginContext(formValues.repo_url, formValues.repo_token);
         GetListPR(formValues.repo_url, formValues.repo_token);
@@ -77,7 +80,6 @@ export default function SelectRepo() {
                 id="link-repo"
                 type="text"
                 {...register("repo_url")}
-                required
               />
               {errors.repo_url && (
                 <span className=" text-red-500">{errors.repo_url.message}</span>
@@ -100,11 +102,13 @@ export default function SelectRepo() {
                 type="password"
                 placeholder="******************"
                 {...register("repo_token")}
+                required
               />
               {isInvalidToken && (
-                <span className=" text-red-500">
-                  Invalid accesstoken
-                </span>
+                <span className=" text-red-500">Invalid accesstoken</span>
+              )}
+              {errors.repo_token && (
+                <span className=" text-red-500">{errors.repo_token.message}</span>
               )}
             </div>
           </div>
@@ -113,7 +117,8 @@ export default function SelectRepo() {
             <div className="md:w-1/3"></div>
             <div className="md:w-2/3">
               <button
-                className="shadow bg-gray-500 hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded"
+                className="shadow bg-gray-500 hover:bg-gray-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded disabled:cursor-not-allowed disabled:opacity-50"
+                disabled={isClicked}
                 type="button"
                 onClick={onSubmit}
               >
