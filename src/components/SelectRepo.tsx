@@ -13,7 +13,7 @@ const LoginSchema = z.object({
       /^(https?:\/\/)?(www\.)?github\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+$/,
       { message: "Invalid url" }
     ),
-  repo_token: z.string({required_error: "token is required"}),
+  repo_token: z.string({required_error: "Token is required"}).nonempty({ message: "Token is required" }),
 });
 
 type LoginSchemaType = z.infer<typeof LoginSchema>;
@@ -49,7 +49,7 @@ export default function SelectRepo() {
   });
 
   const onSubmit = handleSubmit(async (formValues) => {
-    
+    console.log('error token',errors.repo_token)
     if (!errors.repo_url && !errors.repo_token && formValues.repo_token) {
       setIsClicked(true);
       try {
