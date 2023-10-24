@@ -89,6 +89,5 @@ export async function review(pull: pull, files: fileInfoWithDiff[]) {
 			reply: res,
 		});
 	}
-	console.log("reviewReply", reviewReply);
 	return reviewReply;
 }
