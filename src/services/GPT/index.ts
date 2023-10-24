@@ -38,7 +38,7 @@ export async function review(pull: pull, files: fileInfoWithDiff[]) {
 	} requested by ${pull.upploader} with title is "${pull.title}" at ${
 		pull.updated_at
 	}.
-		you need to introduce which file you are reviewing by adding the file name at the start of your comment.
+		you need to introduce which file you are reviewing by adding the file name and it folder at the start of your comment.
     Your task is:
     - Review the code changes and provide feedback.
     - If there are any bugs, highlight them.
