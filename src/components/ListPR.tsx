@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { useRepo } from "@/context/RepoContext";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { use, useMemo, useState } from "react";
 import { pull } from "@/services/github";
 
 export default function ListPR() {
@@ -13,7 +13,18 @@ export default function ListPR() {
 
   const [isSearch, setIsSearch] = useState(false);
   const [searchValue, setSeachValue] = useState<string>("");
-  const [searchList, setSearchList] = useState<pull[] | undefined>();
+  
+  const searchList = useMemo(() => {
+    const filteredList = list_PR?.filter((PR) => {
+      const PRtitle = PR.title.toLowerCase()
+      const PRuploader = PR.upploader?.toLowerCase()
+      const searchValueLower = searchValue.toLowerCase()
+
+      return PRtitle.includes(searchValueLower) || PRuploader?.includes(searchValueLower)
+    })
+
+    return filteredList
+  }, [list_PR, searchValue])
 
   function handleSearch(e: React.ChangeEvent<HTMLInputElement>) {
     setSeachValue(e.target.value);
@@ -22,14 +33,6 @@ export default function ListPR() {
       return;
     }
     setIsSearch(true);
-    setSearchList(
-      list_PR!.filter(
-        (PR) =>
-          PR.title.toLowerCase().includes(searchValue) ||
-          (PR.upploader &&
-            PR.upploader.toLocaleLowerCase().includes(searchValue))
-      )
-    );
   }
 
   return (
@@ -63,7 +66,7 @@ export default function ListPR() {
                 id="table-search-users"
                 className="block p-2 pl-10 text-sm text-gray-900 border border-gray-300 rounded-lg w-80 bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                 value={searchValue}
-                placeholder="Search Pull Request by title"
+                placeholder="Search Pull Request by title or uploader"
                 onChange={handleSearch}
               />
             </div>
@@ -118,8 +121,8 @@ export default function ListPR() {
                       </td>
                     </tr>
                   ))
-                : searchList &&
-                  searchList.map((pr, index) => (
+                : isSearch &&
+                  searchList!.map((pr, index) => (
                     <tr className="table__row" key={index}>
                       <td className=" pr__title">{pr.title}</td>
                       <td>{pr.upploader}</td>
