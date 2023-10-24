@@ -179,6 +179,9 @@ const Page = () => {
 			return;
 		}
 		router.push("/summary");
+		setFilesReviewing([]);
+		const abort = new AbortController();
+		abort.abort();
 	};
 
 	return (
