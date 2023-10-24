@@ -25,11 +25,8 @@ export type fileInfoWithDiff = {
 export async function getPulls(url: string, token?: string) {
 	let urlFormat;
 	try {
-		console.log("url", url);
 		urlFormat = new URL(url);
-		console.log("getRepo", urlFormat, token);
 		const [owner, repo] = urlFormat.pathname.split("/").slice(1, 3);
-		console.log("getRepo", owner, repo);
 		const option = token ? { auth: token } : {};
 		const octokit = new Octokit(option);
 
@@ -53,7 +50,6 @@ export async function getPulls(url: string, token?: string) {
 			owner: item.head.repo.owner.login,
 			repo: item.head.repo.name,
 		}));
-		console.log("formatRes", formatRes);
 		return formatRes;
 	} catch (error) {
 		console.warn(error);
@@ -104,7 +100,7 @@ export async function getDiff(diff_url: string, token?: string) {
 		});
 		return formatRes2;
 	} catch (error) {
-		console.log("error", error);
+		console.warn("error", error);
 	}
 }
 
