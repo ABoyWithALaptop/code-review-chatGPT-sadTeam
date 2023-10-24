@@ -113,11 +113,13 @@ function CustomCheckBoxTree({
 			onCheck={(checked) => setChecked(checked)}
 			onExpand={(expanded) => setExpanded(expanded)}
 			onClick={(target) => {
-				console.log("clicked", target);
-				const watch = totalFileCollection.filter(
-					(file) => file.newFile === target.value
-				);
-				setFileOnWatch(watch[0]);
+				if (target.value.includes(".")) {
+					console.log("clicked", target);
+					const watch = totalFileCollection.filter(
+						(file) => file.newFile === target.value
+					);
+					setFileOnWatch(watch[0]);
+				}
 			}}
 			icons={icons}
 			disabled={disable}
