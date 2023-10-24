@@ -110,7 +110,6 @@ export default function ListPR() {
                           className="pr__action cursor-pointer"
                           onClick={() => {
                             setSelectedPR(pr);
-                            // handleSelectPRContext(pr);
                             router.push("/diff");
                           }}
                         >
@@ -138,7 +137,6 @@ export default function ListPR() {
                           className="pr__action cursor-pointer"
                           onClick={() => {
                             setSelectedPR(pr);
-                            // handleSelectPRContext(pr);
                             router.push("/diff");
                           }}
                         >

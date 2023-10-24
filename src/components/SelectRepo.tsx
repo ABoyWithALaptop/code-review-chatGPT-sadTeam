@@ -8,8 +8,6 @@ export default function SelectRepo() {
   const handleSubmit = () => {
     // Handle here
     loginContext(link, accesstoken);
-    // setRepo_url(link);
-    // setToken(accesstoken);
     router.push("/select-pr");
   };
 
