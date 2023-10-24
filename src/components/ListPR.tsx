@@ -8,7 +8,7 @@ export default function ListPR() {
   const router = useRouter();
   const { repo_token, repo_url, list_PR, getListPRContext, setSelectedPR } =
     useRepo();
-  console.log(repo_token, repo_url);
+
   getListPRContext(repo_url, repo_token);
 
   const [isSearch, setIsSearch] = useState(false);
