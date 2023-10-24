@@ -40,7 +40,6 @@ export async function getPulls(url: string, token?: string) {
 				"X-GitHub-Api-Version": "2022-11-28",
 			},
 		});
-		console.log("res", res);
 		const formatRes: pull[] = res.data.map<pull>((item) => ({
 			number_pull: item.number,
 			id: item.id,
@@ -58,17 +57,16 @@ export async function getPulls(url: string, token?: string) {
 		return formatRes;
 	} catch (error) {
 		console.warn(error);
+		return undefined;
 	}
 }
 
 export async function getDiff(diff_url: string, token?: string) {
 	try {
-		console.log("do it");
 		const urlFormat = new URL(diff_url);
 		const [owner, repo, pull, number] = urlFormat.pathname
 			.split("/")
 			.slice(1, 5);
-		console.log("getRepo", owner, repo, pull, number);
 		const option = token ? { auth: token } : {};
 		const octokit = new Octokit(option);
 
@@ -117,9 +115,6 @@ export async function createComment(
 ) {
 	const option = token ? { auth: token } : {};
 	const octokit = new Octokit(option);
-	// const octokit = new Octokit({
-	// 	auth: "YOUR-TOKEN",
-	// });
 	const owner = pull.owner;
 	const repo = pull.repo;
 	const res = await octokit.request(
@@ -134,5 +129,4 @@ export async function createComment(
 			},
 		}
 	);
-	console.log("res after comment", res);
 }

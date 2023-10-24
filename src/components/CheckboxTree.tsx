@@ -39,7 +39,6 @@ function CustomCheckBoxTree({
 		useFileContext();
 	const [treeNodes, setTreeNodes] = useState<TreeNode[]>([]);
 	useEffect(() => {
-		console.log("checked", checked);
 		if (checked.length > 0) {
 			let checkedFile: fileInfoWithDiff[] = [];
 			totalFileCollection.forEach((file) => {
@@ -114,7 +113,6 @@ function CustomCheckBoxTree({
 			onExpand={(expanded) => setExpanded(expanded)}
 			onClick={(target) => {
 				if (target.value.includes(".")) {
-					console.log("clicked", target);
 					const watch = totalFileCollection.filter(
 						(file) => file.newFile === target.value
 					);

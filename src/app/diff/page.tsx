@@ -29,6 +29,7 @@ const Page = () => {
 	const [filesTree, setFilesTree] = useState<Node[]>([]); //[{ value: "src", label: "src" }
 	const [reviewStatus, setReviewStatus] = useState<boolean>(false);
 	const [reviewText, setReviewText] = useState<string>("");
+	const [fileReviewed, setFileReviewed] = useState<string[]>([]);
 	const router = useRouter();
 	const {
 		totalFileCollection,
@@ -45,9 +46,13 @@ const Page = () => {
 			setTotalFileCollection(res!);
 		});
 	}, []);
+	useEffect(() => {
+		setFilesReviewing(
+			filesReviewing.filter((file) => !fileReviewed.includes(file))
+		);
+	}, [fileReviewed]);
 
 	useEffect(() => {
-		console.log("diff", totalFileCollection);
 		const filesTree: Node[] = [];
 		totalFileCollection?.forEach((item) => {
 			if (!item.newFile?.includes("/"))
@@ -55,9 +60,7 @@ const Page = () => {
 			else {
 				let temp: Node;
 				const fileSplit = item.newFile?.split("/");
-				console.log("fileSplit", fileSplit);
 				const exist1st = filesTree.filter((file) => {
-					console.log("file", file);
 					return file.value === fileSplit[0];
 				});
 				if (exist1st.length > 0) {
@@ -78,7 +81,6 @@ const Page = () => {
 									children: [],
 								};
 							}
-							console.log(`temp at ${i} when existed root`, temp);
 							const prev = searchTree(exist1st[0], fileSplit[i - 1]) as Node;
 							prev.children?.push(temp);
 						}
@@ -92,36 +94,14 @@ const Page = () => {
 					filesTree.push(initRoot as Node);
 				}
 			}
-			console.log("filesTree", filesTree);
 		});
 		setFilesTree(filesTree);
 	}, [totalFileCollection]);
 
 	useEffect(() => {
-		if (fileOnWatch) {
-			console.log("fileOnWatch", fileOnWatch);
-			console.log("reply", reply);
-			if (
-				reply.length > 0 &&
-				reply.some(
-					(item) =>
-						item.file.toLowerCase() == fileOnWatch.newFile?.toLowerCase()
-				)
-			) {
-				console.log("set status after reply");
-				setReviewStatus(false);
-			} else {
-				setReviewStatus(filesReviewing.includes(fileOnWatch.newFile!));
-			}
-		}
-	}, [fileOnWatch]);
-
-	useEffect(() => {
 		if (reviewStatus === true) {
 			setReviewText("file is reviewing...");
 		} else {
-			console.log("reply", reply);
-			console.log("fileOnWatch", fileOnWatch);
 			if (reply.some((item) => item.file === fileOnWatch.newFile)) {
 				setReviewText(
 					reply.filter((item) => item.file === fileOnWatch.newFile!)[0]?.reply!
@@ -132,12 +112,11 @@ const Page = () => {
 		}
 	}, [reviewStatus, reply, fileOnWatch]);
 	useEffect(() => {
-		if (reply.length > 0) {
-			if (reply.some((item) => item.file === fileOnWatch.newFile)) {
-				setReviewStatus(false);
-			}
+		if (fileOnWatch) {
+			const bool = filesReviewing.some((file) => file === fileOnWatch?.newFile);
+			setReviewStatus(bool);
 		}
-	}, [reply]);
+	}, [fileOnWatch, filesReviewing]);
 
 	const handleReview = () => {
 		if (fileSelected.length == 0 && !fileOnWatch) {
@@ -152,8 +131,7 @@ const Page = () => {
 			fileSelected.length > 0
 				? fileSelected
 				: [...currentlyReviewing, fileOnWatch];
-		setFilesReviewing(reviewFiles.map((file) => file.newFile!) || []);
-		console.log("before review", reviewFiles);
+		setFilesReviewing(reviewFiles.map((file) => file.newFile!));
 		if (
 			reply.some(
 				(item) => filesReviewing.filter((file) => file === item.file).length > 0
@@ -170,7 +148,7 @@ const Page = () => {
 			setReply(copyReply);
 		}
 		review(selectedPR, reviewFiles).then((res) => {
-			console.log("review", res);
+			toast.success(`reviewed`);
 			if (reply.length > 0) {
 				const copyReply = [...reply];
 				// check if any element in reply is in res
@@ -188,12 +166,10 @@ const Page = () => {
 			} else {
 				setReply(res!);
 			}
-			setFilesReviewing(
-				filesReviewing.filter((file) => {
-					return !res!.some((item) => item.file === file);
-				})
-			);
-			// setReviewStatus(false);
+			setFileReviewed([
+				...fileReviewed,
+				...reviewFiles.map((file) => file.newFile!),
+			]);
 		});
 	};
 
