@@ -31,7 +31,6 @@ function CustomCheckBoxTree({
 	filesTree: Node[];
 	disable: boolean;
 }): JSX.Element {
-	console.log("filesTree", filesTree);
 	const [checked, setChecked] = useState<string[]>([]);
 	const [expanded, setExpanded] = useState<string[]>([]);
 	const { repo_token, selectedPR } = useRepo();
@@ -49,6 +48,8 @@ function CustomCheckBoxTree({
 			if (checkedFile.length > 0) {
 				setFileSelected(checkedFile);
 			}
+		} else {
+			setFileSelected([]);
 		}
 	}, [checked]);
 
@@ -105,24 +106,24 @@ function CustomCheckBoxTree({
 	};
 	return (
 		<div className="rounded border border-gray-600 mx-3 h-full overflow-auto">
-		{/* @ts-ignore */}
-		<CheckboxTree
-			nodes={filesTree}
-			checked={checked}
-			expanded={expanded}
-			onCheck={(checked) => setChecked(checked)}
-			onExpand={(expanded) => setExpanded(expanded)}
-			onClick={(target) => {
-				if (target.value.includes(".")) {
-					const watch = totalFileCollection.filter(
-						(file) => file.newFile === target.value
-					);
-					setFileOnWatch(watch[0]);
-				}
-			}}
-			icons={icons}
-			disabled={disable}
-		/>
+			{/* @ts-ignore */}
+			<CheckboxTree
+				nodes={filesTree}
+				checked={checked}
+				expanded={expanded}
+				onCheck={(checked) => setChecked(checked)}
+				onExpand={(expanded) => setExpanded(expanded)}
+				onClick={(target) => {
+					if (target.value.includes(".")) {
+						const watch = totalFileCollection.filter(
+							(file) => file.newFile === target.value
+						);
+						setFileOnWatch(watch[0]);
+					}
+				}}
+				icons={icons}
+				disabled={disable}
+			/>
 		</div>
 	);
 }
