@@ -181,7 +181,6 @@ const Page = () => {
 	};
 
 	const handleSummary=()=>{
-		console.log("Router to summary")
 		router.push('/summary')
 	}
 

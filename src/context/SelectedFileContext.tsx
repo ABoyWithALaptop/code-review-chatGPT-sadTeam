@@ -25,7 +25,7 @@ export const useFileContext = () => {
 	const currentContext = useContext(FileSelectedContext);
 
 	if (!currentContext) {
-		throw new Error("Not found BookContext");
+		throw new Error("Not found FileContext");
 	}
 
 	return currentContext;

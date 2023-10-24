@@ -12,7 +12,7 @@ export default function Header() {
   return (
     <header className=" border-b-2 border-black">
       <nav className="navbar flex w-full items-center justify-between p-4">
-        <Link href="/" id="bookstore" className=" text-2xl font-bold">
+        <Link href="/" className="text-2xl font-bold">
           Code Review
         </Link>
         {repo_url ? (
