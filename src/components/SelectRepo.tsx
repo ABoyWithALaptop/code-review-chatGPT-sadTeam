@@ -1,4 +1,4 @@
-import { useState } from "react";
+
 import { useRepo } from "@/context/RepoContext";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
@@ -6,7 +6,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
 const LoginSchema = z.object({
-  repo_url: z.string().url({ message: "Invalid url" }),
+  repo_url: z.string().regex(/^(https?:\/\/)?(www\.)?github\.com\/[a-zA-Z0-9_-]+\/[a-zA-Z0-9_-]+$/,{ message: "Invalid url" }),
   repo_token: z.string(),
 });
 
@@ -31,7 +31,12 @@ export default function SelectRepo() {
   const onSubmit = handleSubmit(async (formValues) => {
     if (!errors.repo_url && !errors.repo_token && formValues.repo_token) {
       try {
-        await loginContext(formValues.repo_url, formValues.repo_token);
+        loginContext(formValues.repo_url, formValues.repo_token);
+        // getListPRContext(formValues.repo_url, formValues.repo_token);
+        // if (list_PR) {
+        //   router.push("/select-pr");
+        //   return;
+        // }
         router.push("/select-pr");
       } catch (error) {
         console.log(error);

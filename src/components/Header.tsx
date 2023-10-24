@@ -3,8 +3,8 @@
 import Link from "next/link";
 import { useRepo } from "@/context/RepoContext";
 
-export default function Header() {
 
+export default function Header() {
   const { repo_url } = useRepo();
   var paths = repo_url.split("/");
   const repo_name = paths[paths.length - 1];
