@@ -11,6 +11,8 @@ export type pull = {
 	comments_url: string;
 	html_url: string;
 	description?: string;
+	owner: string;
+	repo: string;
 };
 export type fileInfoWithDiff = {
 	changeLine: { content: string; changes: Change[] }[];
@@ -49,6 +51,8 @@ export async function getPulls(url: string, token?: string) {
 			comments_url: item.comments_url,
 			html_url: item.html_url,
 			description: item.body && item.body.length > 0 ? item.body : undefined,
+			owner: item.head.repo.owner.login,
+			repo: item.head.repo.name,
 		}));
 		console.log("formatRes", formatRes);
 		return formatRes;
@@ -104,4 +108,31 @@ export async function getDiff(diff_url: string, token?: string) {
 	} catch (error) {
 		console.log("error", error);
 	}
+}
+
+export async function createComment(
+	pull: pull,
+	token: string = "",
+	comment: string
+) {
+	const option = token ? { auth: token } : {};
+	const octokit = new Octokit(option);
+	// const octokit = new Octokit({
+	// 	auth: "YOUR-TOKEN",
+	// });
+	const owner = pull.owner;
+	const repo = pull.repo;
+	const res = await octokit.request(
+		"POST /repos/{owner}/{repo}/issues/{issue_number}/comments",
+		{
+			owner: owner,
+			repo: repo,
+			issue_number: pull.number_pull,
+			body: comment,
+			headers: {
+				"X-GitHub-Api-Version": "2022-11-28",
+			},
+		}
+	);
+	console.log("res after comment", res);
 }

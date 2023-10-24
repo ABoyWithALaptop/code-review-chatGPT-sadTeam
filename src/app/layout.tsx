@@ -24,7 +24,9 @@ export default function RootLayout({
 			<body className={inter.className}>
 				<RepoProvider>
 					<Header />
-					<FileContextProvider>{children}</FileContextProvider>
+					<FileContextProvider>
+						<div className="h-[calc(100vh-66px-52px)]">{children}</div>
+					</FileContextProvider>
 				</RepoProvider>
 				<Footer />
 				<ToastContainer
